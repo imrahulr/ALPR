@@ -19,6 +19,7 @@ class sqldb:
                 plateno = row[2]
                 mobile = row[3]
                 balance = row[4]
+            print ("Table\n")
             print ("Name : %s\nPlate Number : %s\nMobile : %s\nBalance : %d" % (name, plateno, mobile, 
                                                                                 balance))
         except:
@@ -34,6 +35,7 @@ class sqldb:
                 plate = row[2]
                 mobile = row[3]
                 balance = row[4]
+            print ("Plate found in database")
             print ("Name : %s\nPlate Number : %s\nMobile : %s\nBalance : %d" % (name, plate, mobile, 
                                                                                 balance))
         except:
@@ -47,7 +49,7 @@ class sqldb:
             for row in results:
                 plate = row[2]
                 balance = row[4]
-            print ("Plate Number : %s\nOld Balance : %d" % (plate, balance))
+            print ("Debit..\nPlate Number : %s\nOld Balance : %d" % (plate, balance))
             balance -= amount
             if (balance >= 0):
                 self.cursor = self.db.cursor()
@@ -89,7 +91,7 @@ class sqldb:
             for row in results:
                 plate = row[2]
                 balance = row[4]
-            print ("Plate Number : %s\nOld Balance : %d" % (plate, balance))
+            print ("Credit..\nPlate Number : %s\nOld Balance : %d" % (plate, balance))
             balance += amount
             self.cursor = self.db.cursor()
             sql = "UPDATE %s SET balance = %d WHERE plateno = '%s'" % (self.table, balance, plate_no)
@@ -105,6 +107,9 @@ class sqldb:
         self.cursor.execute(sql)
         count = self.cursor.fetchall()    
         print ("Number of rows in table : %d" % count[0])
+        
+    def close_conn(self):
+        self.db.close()
         
     def __init__(self, dbname, tablename):
         self.dbname = dbname
