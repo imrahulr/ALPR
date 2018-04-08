@@ -49,11 +49,14 @@ class sqldb:
                 balance = row[4]
             print ("Plate Number : %s\nOld Balance : %d" % (plate, balance))
             balance -= amount
-            self.cursor = self.db.cursor()
-            sql = "UPDATE %s SET balance = %d WHERE plateno = '%s'" % (self.table, balance, plate_no)
-            self.cursor.execute(sql)
-            self.db.commit()
-            print ("New Balance : %d" % (balance))        
+            if (balance >= 0):
+                self.cursor = self.db.cursor()
+                sql = "UPDATE %s SET balance = %d WHERE plateno = '%s'" % (self.table, balance, plate_no)
+                self.cursor.execute(sql)
+                self.db.commit()
+                print ("New Balance : %d" % (balance))  
+            else:
+                print ("Insufficient Balance")
         except:
             self.db.rollback()
             print ("Error: No such plate found in the database") 
