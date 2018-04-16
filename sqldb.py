@@ -40,6 +40,32 @@ class sqldb:
                                                                                 balance))
         except:
             print ("Error: No such plate found in the database")
+            
+    def search_nearest_db(self, plate_no_list):
+        found = 0
+        for no in plate_no_list:
+            sql = "SELECT * FROM %s WHERE plateno = '%s'" % (self.table, no)
+            try:
+                self.cursor.execute(sql)
+                if self.cursor.rowcount > 0:
+                    results = self.cursor.fetchall()
+                    found = 1
+                    for row in results:
+                        name = row[1]
+                        plate = row[2]
+                        mobile = row[3]
+                        balance = row[4]
+                    print ("Plate found in database")
+                    print ("Name : %s\nPlate Number : %s\nMobile : %s\nBalance : %d" % (name, plate, mobile, 
+                                                                                        balance))
+                    break;
+            except:
+                pass
+        if found == 0:
+            print ("Error: No such plate found in the database")
+            return 'NULL'
+        else:
+            return plate
     
     def debit(self, plate_no, amount):
         sql = "SELECT * FROM %s WHERE plateno = '%s'" % (self.table, plate_no)
